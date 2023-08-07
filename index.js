@@ -33,11 +33,11 @@ const asyncTask = async (title, task) => {
   stop('Success');
 };
 
-await asyncTask('Clone sheetjs repository', async () => {
+await asyncTask('Cloning the sheetjs repository', async () => {
   await git.clone(SHEETJS_GIT_REPOSITORY_URL, SHEETJS_PATH);
 });
 
-await asyncTask('Get package version from repository', async ({ log }) => {
+await asyncTask('Getting a package version from the repository', async ({ log }) => {
   const gitPackageFileContent = await fs.readFile(SHEETJS_PACKAGE_PATH);
   const gitPackage = JSON.parse(gitPackageFileContent);
   gitPackageVersion = gitPackage.version;
@@ -46,7 +46,7 @@ await asyncTask('Get package version from repository', async ({ log }) => {
 });
 
 await asyncTask(
-  'Get package version from repository',
+  'Getting a package version from the npm registry',
   async ({ log, warn }) => {
     try {
       const npmRegistryInfoResponse = await fetch(NPM_PACKAGE_REGISTRY_URL, {
