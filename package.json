@@ -1,20 +1,20 @@
 {
-  "name": "sheetjs-npm-publisher",
-  "version": "1.0.0",
-  "description": "sheetjs npm publisher",
-  "private": "true",
-  "type": "module",
-  "author": "Dmitry <dmitry@cojam.ru> (https://e965.ru)",
-  "license": "MIT",
-  "scripts": {
-    "start": "node index.js",
-    "prestart": "npm run clean",
-    "clean": "rm -rf sheetjs",
-    "prettier": "prettier -w index.js"
-  },
-  "devDependencies": {
-    "ora": "5.4.1",
-    "prettier": "3.0.1",
-    "simple-git": "3.19.1"
-  }
+	"name": "sheetjs-npm-publisher",
+	"version": "1.0.0",
+	"description": "sheetjs npm publisher",
+	"private": "true",
+	"type": "module",
+	"author": "Dmitry <dmitry@cojam.ru> (https://e965.ru)",
+	"license": "MIT",
+	"scripts": {
+		"start": "node index.js",
+		"prestart": "npm run clean",
+		"clean": "rm -rf sheetjs",
+		"prettier": "prettier -w index.js package.json"
+	},
+	"devDependencies": {
+		"ora": "5.4.1",
+		"prettier": "3.0.1",
+		"simple-git": "3.19.1"
+	}
 }
