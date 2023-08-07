@@ -68,7 +68,7 @@ await asyncTask(
   },
 );
 
-await asyncTask('Check versions', async ({ log }) => {
+await asyncTask('Checking versions', async ({ log }) => {
   if (gitPackageVersion === npmPackageVersion) {
     log('Versions are the same, no publishing required');
     process.exit(1);
