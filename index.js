@@ -7,7 +7,7 @@ import { simpleGit } from 'simple-git';
 const README_FILE = 'README.md';
 const LOCAL_README_PATH = path.join(process.cwd(), README_FILE);
 
-const NPM_PACKAGE_NAME = 'xlsxn';
+const NPM_PACKAGE_NAME = '@e965/xlsx';
 const NPM_REGISTRY_URL = 'https://registry.npmjs.org';
 const NPM_PACKAGE_REGISTRY_URL = new URL(NPM_PACKAGE_NAME, NPM_REGISTRY_URL)
   .href;
@@ -70,7 +70,7 @@ await asyncTask(
 await asyncTask('Check versions', async ({ log }) => {
   if (gitPackageVersion === npmPackageVersion) {
     log('Versions are the same, no publishing required');
-    process.exit(0);
+    process.exit(1);
   }
   log('Passed');
 });
