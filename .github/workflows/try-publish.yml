@@ -41,11 +41,8 @@ jobs:
         run: npm start
         continue-on-error: true
 
-      - name: Cancelling
-        if: steps.patching.outcome != 'success'
-        uses: andymckay/cancel-action@0.3
-
       - name: Publish
+        if: steps.patching.outcome == 'success'
         working-directory: sheetjs
         run: npm publish --access public --provenance
         env:
