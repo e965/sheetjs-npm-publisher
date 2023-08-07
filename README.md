@@ -1,7 +1,9 @@
 # [SheetJS](https://sheetjs.com)
 
-> Since the authors of the original package decided to make a dumb protest that makes
-most of the community unable to access their package without [vulnerabilities](https://github.com/advisories/GHSA-4r6h-8v6p-xvw6),
+> Since the authors of the original package decided to stage their
+[dumb](https://github.com/SheetJS/sheetjs/issues/2667) [protest](https://git.sheetjs.com/sheetjs/sheetjs/issues/2667)
+that makes most of the community unable to access their package without
+[vulnerabilities](https://github.com/advisories/GHSA-4r6h-8v6p-xvw6),
 I decided to make this project. It automatically takes a fresh version of SheetJS
 from their git repository, and publishes to npm if the version is different.
 The whole process is automated and works through Github Actions.
