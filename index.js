@@ -4,6 +4,7 @@ import path from 'node:path';
 import ora from 'ora';
 import { simpleGit } from 'simple-git';
 
+const REPOSITORY_URL = 'https://github.com/e965/sheetjs-npm-publisher';
 const README_FILE = 'README.md';
 const LOCAL_README_PATH = path.join(process.cwd(), README_FILE);
 
@@ -85,6 +86,7 @@ await asyncTask('Patching a package.json file in project', async () => {
   const gitPackage = JSON.parse(gitPackageFileContent);
 
   gitPackage.name = NPM_PACKAGE_NAME;
+  gitPackage.repository.url = REPOSITORY_URL;
 
   const newFileContent = JSON.stringify(gitPackage, null, 2);
   await fs.rm(SHEETJS_PACKAGE_PATH, { force: true, recursive: true });
