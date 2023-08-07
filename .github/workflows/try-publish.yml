@@ -37,9 +37,12 @@ jobs:
         run: npm ci
 
       - name: Patching
+        id: patching
         run: npm start
+        continue-on-error: true
 
       - name: Publish
+        if: steps.patching.outcome == 'success'
         working-directory: sheetjs
         run: npm publish --access public --provenance
         env:
