@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 import ora from 'ora';
+import semver from 'semver';
 import { simpleGit } from 'simple-git';
 
 const REPOSITORY_URL = 'https://github.com/e965/sheetjs-npm-publisher';
@@ -35,10 +36,15 @@ await asyncTask('Cloning the sheetjs repository', async () => {
 	await git.clone(SHEETJS_GIT_REPOSITORY_URL, SHEETJS_PATH);
 });
 
-await asyncTask('Getting a package version from the repository', async ({ log }) => {
+await asyncTask('Getting a package version from the repository', async ({ log, warn }) => {
 	const gitPackageFileContent = await fs.readFile(SHEETJS_PACKAGE_PATH);
 	const gitPackage = JSON.parse(gitPackageFileContent);
-	gitPackageVersion = gitPackage.version;
+	gitPackageVersion = semver.valid(gitPackage.version);
+
+	if (!gitPackageVersion) {
+		warn('Invalid version');
+		process.exit(1);
+	}
 
 	log(`Success, git version = ${gitPackageVersion}`);
 });

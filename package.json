@@ -13,8 +13,10 @@
 		"prettier": "prettier -w index.js package.json"
 	},
 	"devDependencies": {
+		"@types/semver": "7.5.0",
 		"ora": "5.4.1",
-		"prettier": "3.0.1",
+		"prettier": "3.0.2",
+		"semver": "7.5.4",
 		"simple-git": "3.19.1"
 	}
 }
