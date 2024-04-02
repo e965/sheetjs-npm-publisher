@@ -20,7 +20,8 @@ const SHEETJS_README_PATH = path.join(SHEETJS_PATH, README_FILE);
 
 const git = simpleGit();
 
-let gitPackageVersion = null;
+let latestTagName = null;
+let taggedVersion = null;
 let npmPackageVersion = null;
 
 const asyncTask = async (title, task) => {
@@ -32,21 +33,15 @@ const asyncTask = async (title, task) => {
 	stop('Success');
 };
 
-await asyncTask('Cloning the sheetjs repository', async () => {
-	await git.clone(SHEETJS_GIT_REPOSITORY_URL, SHEETJS_PATH);
-});
-
-await asyncTask('Getting a package version from the repository', async ({ log, warn }) => {
-	const gitPackageFileContent = await fs.readFile(SHEETJS_PACKAGE_PATH);
-	const gitPackage = JSON.parse(gitPackageFileContent);
-	gitPackageVersion = semver.valid(gitPackage.version);
-
-	if (!gitPackageVersion) {
-		warn('Invalid version');
-		process.exit(1);
-	}
-
-	log(`Success, git version = ${gitPackageVersion}`);
+await asyncTask('Get Latest tag', async ({ log }) => {
+	const listText = await git.listRemote(["--tags", "--sort=-v:refname", SHEETJS_GIT_REPOSITORY_URL]);
+	const listTags = listText.match(/[^\r\n]+/g)
+		.map(s => s.replace(/^.*refs\/tags\//, ''))
+		.filter(t => semver.valid(t.substring(1)))			// check valid version
+		.filter(t => /^v[0-9]+\.[0-9]+\.[0-9]+$/.test(t))	// skip -a, -h, -i, +deno  etc
+	latestTagName = listTags[0];
+	taggedVersion = latestTagName.substring(1);
+	log(`Success, git effective latest tag name = ${latestTagName}, tagged version = ${taggedVersion}`);
 });
 
 await asyncTask('Getting a package version from the npm registry', async ({ log, warn }) => {
@@ -68,11 +63,15 @@ await asyncTask('Getting a package version from the npm registry', async ({ log,
 });
 
 await asyncTask('Checking versions', async ({ log }) => {
-	if (gitPackageVersion === npmPackageVersion) {
+	if (taggedVersion === npmPackageVersion) {
 		log('Versions are the same, no publishing required');
 		process.exit(1);
 	}
 	log('Passed');
+});
+
+await asyncTask('Cloning the sheetjs repository', async () => {
+	await git.clone(SHEETJS_GIT_REPOSITORY_URL, SHEETJS_PATH, ["--branch", latestTagName]);
 });
 
 await asyncTask('Replacing a README file in project', async () => {
