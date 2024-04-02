@@ -42,6 +42,12 @@ await asyncTask('Get Latest tag', async ({ log }) => {
 		.filter(s => /^v[0-9]+\.[0-9]+\.[0-9]+$/.test(s)); // skip -a, -h, -i, +deno etc
 	latestTagName = listTags[0];
 	taggedVersion = latestTagName.substring(1);
+
+	if (!latestTagName) {
+		warn('Invalid version');
+		process.exit(1);
+	}
+
 	log(`Success, git effective latest tag name = ${latestTagName}, tagged version = ${taggedVersion}`);
 });
 
