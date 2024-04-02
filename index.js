@@ -34,11 +34,12 @@ const asyncTask = async (title, task) => {
 };
 
 await asyncTask('Get Latest tag', async ({ log }) => {
-	const listText = await git.listRemote(["--tags", "--sort=-v:refname", SHEETJS_GIT_REPOSITORY_URL]);
-	const listTags = listText.match(/[^\r\n]+/g)
+	const listText = await git.listRemote(['--tags', '--sort=-v:refname', SHEETJS_GIT_REPOSITORY_URL]);
+	const listTags = listText
+		.match(/[^\r\n]+/g)
 		.map(s => s.replace(/^.*refs\/tags\//, ''))
-		.filter(t => semver.valid(t.substring(1)))			// check valid version
-		.filter(t => /^v[0-9]+\.[0-9]+\.[0-9]+$/.test(t))	// skip -a, -h, -i, +deno  etc
+		.filter(s => semver.valid(s.substring(1))) // check valid version
+		.filter(s => /^v[0-9]+\.[0-9]+\.[0-9]+$/.test(s)); // skip -a, -h, -i, +deno etc
 	latestTagName = listTags[0];
 	taggedVersion = latestTagName.substring(1);
 	log(`Success, git effective latest tag name = ${latestTagName}, tagged version = ${taggedVersion}`);
@@ -62,16 +63,20 @@ await asyncTask('Getting a package version from the npm registry', async ({ log,
 	}
 });
 
-await asyncTask('Checking versions', async ({ log }) => {
+await asyncTask('Checking versions', async ({ log, warn }) => {
 	if (taggedVersion === npmPackageVersion) {
 		log('Versions are the same, no publishing required');
+		process.exit(1);
+	}
+	if (semver.lt(taggedVersion, npmPackageVersion)) {
+		warn('Version in the git repository is lower than the version in npm, no publishing required');
 		process.exit(1);
 	}
 	log('Passed');
 });
 
 await asyncTask('Cloning the sheetjs repository', async () => {
-	await git.clone(SHEETJS_GIT_REPOSITORY_URL, SHEETJS_PATH, ["--branch", latestTagName]);
+	await git.clone(SHEETJS_GIT_REPOSITORY_URL, SHEETJS_PATH, ['--branch', latestTagName]);
 });
 
 await asyncTask('Replacing a README file in project', async () => {
