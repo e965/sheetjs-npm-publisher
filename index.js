@@ -57,7 +57,7 @@ await asyncTask('Getting a package version from the npm registry', async ({ log,
 			method: 'GET',
 		});
 		const npmRegistryInfo = await npmRegistryInfoResponse.json();
-		npmPackageVersion = npmRegistryInfo?.['dist-tags']?.latest;
+		npmPackageVersion = npmRegistryInfo?.['dist-tags']?.latest?.split('-')[0];
 	} catch (error) {
 		console.error(error);
 	}
