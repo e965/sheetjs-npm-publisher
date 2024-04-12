@@ -28,9 +28,9 @@ port calculations to web apps; automate common spreadsheet tasks, and much more!
 
 - <https://oss.sheetjs.com/notes/>: File Format Notes
 
-- [`ssf`](packages/ssf): Format data using ECMA-376 spreadsheet format codes
+- [`ssf`](https://git.sheetjs.com/sheetjs/sheetjs/src/branch/master/packages/ssf): Format data using ECMA-376 spreadsheet format codes
 
-- [`xlsx-cli`](packages/xlsx-cli): NodeJS command-line tool for processing files
+- [`xlsx-cli`](https://git.sheetjs.com/sheetjs/sheetjs/src/branch/master/packages/xlsx-cli): NodeJS command-line tool for processing files
 
 - [`cfb`](https://git.sheetjs.com/SheetJS/js-cfb): Container (OLE/ZIP) file
 processing library
@@ -38,7 +38,7 @@ processing library
 - [`codepage`](https://git.sheetjs.com/SheetJS/js-codepage): Legacy text
 encodings for XLS and other legacy spreadsheet formats
 
-- [`dta`](packages/dta): Stata DTA file processor
+- [`dta`](https://git.sheetjs.com/sheetjs/sheetjs/src/branch/master/packages/dta): Stata DTA file processor
 
 - [`test_files`](https://github.com/sheetjs/test_files): Test files and various
 plaintext baselines.
