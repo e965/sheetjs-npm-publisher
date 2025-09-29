@@ -8,7 +8,7 @@
 	"license": "MIT",
 	"engines": {
 		"node": "^22.20.0",
-    	"npm": "^11.5.0"
+		"npm": "^11.5.0"
 	},
 	"scripts": {
 		"start": "node index.js",
@@ -17,10 +17,10 @@
 		"prettier": "prettier -w index.js package.json"
 	},
 	"devDependencies": {
-		"@types/semver": "7.5.8",
-		"ora": "8.1.1",
-		"prettier": "3.4.2",
-		"semver": "7.6.3",
-		"simple-git": "3.27.0"
+		"@types/semver": "7.7.1",
+		"ora": "9.0.0",
+		"prettier": "3.6.2",
+		"semver": "7.7.2",
+		"simple-git": "3.28.0"
 	}
 }
