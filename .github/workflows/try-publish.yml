@@ -21,7 +21,8 @@ jobs:
       - name: Git checkout
         uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v5
+      - name: Install Node.js
+        uses: actions/setup-node@v5
         with:
           node-version-file: package.json
           registry-url: https://registry.npmjs.org
