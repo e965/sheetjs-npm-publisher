@@ -4,8 +4,12 @@
 	"description": "sheetjs npm publisher",
 	"private": "true",
 	"type": "module",
-	"author": "Dmitry <dmitry@cojam.ru> (https://e965.ru)",
+	"author": "Dmitry <inbox@e965.ru> (https://e965.ru)",
 	"license": "MIT",
+	"engines": {
+		"node": "^22.20.0",
+    	"npm": "^11.5.0"
+	},
 	"scripts": {
 		"start": "node index.js",
 		"prestart": "npm run clean",
