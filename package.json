@@ -11,12 +11,13 @@
 		"npm": "^11.5.0"
 	},
 	"scripts": {
-		"start": "node index.js",
+		"start": "node index.ts",
 		"prestart": "npm run clean",
 		"clean": "rm -rf sheetjs",
-		"prettier": "prettier -w index.js package.json"
+		"prettier": "prettier -w index.ts package.json"
 	},
 	"devDependencies": {
+		"@types/node": "22.18.6",
 		"@types/semver": "7.7.1",
 		"ora": "9.0.0",
 		"prettier": "3.6.2",

@@ -20,38 +20,47 @@ const SHEETJS_README_PATH = path.join(SHEETJS_PATH, README_FILE);
 
 const git = simpleGit();
 
-let latestTagName = null;
-let taggedVersion = null;
-let npmPackageVersion = null;
+let latestTagName: string | null = null;
+let taggedVersion: string | null = null;
+let npmPackageVersion: string | null = null;
 
-const asyncTask = async (title, task) => {
+type Logger = (text: string) => void;
+type Task = (context: { log: Logger; warn: Logger; fail: Logger }) => Promise<void>;
+const asyncTask = async (title: string, task: Task) => {
 	const spinner = ora(title).start();
-	const stop = text => spinner.isSpinning && spinner.succeed(text);
-	const warn = text => spinner.isSpinning && spinner.warn(text);
+	const stop: Logger = text => {
+		spinner.isSpinning && spinner.succeed(`${title}: ${text}`);
+	};
+	const warn: Logger = text => {
+		spinner.isSpinning && spinner.warn(`${title}: ${text}`);
+	};
+	const fail: Logger = text => {
+		spinner.isSpinning && spinner.fail(`${title}: ${text}`);
+	};
 
-	await task({ log: stop, warn });
+	await task({ log: stop, warn, fail });
 	stop('Success');
 };
 
-await asyncTask('Get Latest tag', async ({ log }) => {
+await asyncTask('Get Latest tag', async ({ log, fail }) => {
 	const listText = await git.listRemote(['--tags', '--sort=-v:refname', SHEETJS_GIT_REPOSITORY_URL]);
 	const listTags = listText
 		.match(/[^\r\n]+/g)
-		.map(s => s.replace(/^.*refs\/tags\//, ''))
+		?.map(s => s.replace(/^.*refs\/tags\//, ''))
 		.filter(s => semver.valid(s.substring(1))) // check valid version
 		.filter(s => /^v[0-9]+\.[0-9]+\.[0-9]+$/.test(s)); // skip -a, -h, -i, +deno etc
-	latestTagName = listTags[0];
-	taggedVersion = latestTagName.substring(1);
+	latestTagName = listTags?.[0] ?? null;
+	taggedVersion = latestTagName?.substring(1) ?? null;
 
 	if (!latestTagName) {
-		warn('Invalid version');
+		fail('Invalid version');
 		process.exit(1);
 	}
 
 	log(`Success, git effective latest tag name = ${latestTagName}, tagged version = ${taggedVersion}`);
 });
 
-await asyncTask('Getting a package version from the npm registry', async ({ log, warn }) => {
+await asyncTask('Getting a package version from the npm registry', async ({ log, fail }) => {
 	try {
 		const npmRegistryInfoResponse = await fetch(NPM_PACKAGE_REGISTRY_URL, {
 			method: 'GET',
@@ -63,15 +72,19 @@ await asyncTask('Getting a package version from the npm registry', async ({ log,
 	}
 
 	if (!npmPackageVersion) {
-		warn('Failed to get a version. The package may not have been published yet');
+		fail('Failed to get a version. The package may not have been published yet');
 	} else {
 		log(`Success, npm version = ${npmPackageVersion}`);
 	}
 });
 
-await asyncTask('Checking versions', async ({ log, warn }) => {
+await asyncTask('Checking versions', async ({ log, warn, fail }) => {
 	if (taggedVersion === npmPackageVersion) {
 		log('Versions are the same, no publishing required');
+		process.exit(1);
+	}
+	if (!taggedVersion || !npmPackageVersion) {
+		fail('One of the versions is invalid');
 		process.exit(1);
 	}
 	if (semver.lt(taggedVersion, npmPackageVersion)) {
@@ -81,8 +94,17 @@ await asyncTask('Checking versions', async ({ log, warn }) => {
 	log('Passed');
 });
 
-await asyncTask('Cloning the sheetjs repository', async () => {
-	await git.clone(SHEETJS_GIT_REPOSITORY_URL, SHEETJS_PATH, ['--branch', latestTagName]);
+await asyncTask('Cloning the sheetjs repository', async ({ fail }) => {
+	if (!latestTagName) {
+		fail('Invalid latest tag name');
+		process.exit(1);
+	}
+	await git.clone(SHEETJS_GIT_REPOSITORY_URL, SHEETJS_PATH, ['--branch', latestTagName], err => {
+		if (err) {
+			fail(`Failed to clone repository: ${err.message}`);
+			process.exit(1);
+		}
+	});
 });
 
 await asyncTask('Replacing a README file in project', async () => {
@@ -91,7 +113,7 @@ await asyncTask('Replacing a README file in project', async () => {
 });
 
 await asyncTask('Patching a package.json file in project', async () => {
-	const gitPackageFileContent = await fs.readFile(SHEETJS_PACKAGE_PATH);
+	const gitPackageFileContent = await fs.readFile(SHEETJS_PACKAGE_PATH, 'utf-8');
 	const gitPackage = JSON.parse(gitPackageFileContent);
 
 	gitPackage.name = NPM_PACKAGE_NAME;
