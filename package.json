@@ -14,13 +14,13 @@
 		"start": "node index.ts",
 		"prestart": "npm run clean",
 		"clean": "rm -rf sheetjs",
-		"prettier": "prettier -w index.ts package.json"
+		"format": "oxfmt index.ts package.json"
 	},
 	"devDependencies": {
 		"@types/node": "24.13.6",
 		"@types/semver": "7.8.0",
 		"ora": "9.4.1",
-		"prettier": "3.9.9",
+		"oxfmt": "0.72.0",
 		"semver": "7.8.5",
 		"simple-git": "4.0.2"
 	}
