@@ -14,7 +14,8 @@
 		"start": "node index.ts",
 		"prestart": "npm run clean",
 		"clean": "rm -rf sheetjs",
-		"format": "oxfmt index.ts package.json"
+		"format": "oxfmt index.ts package.json",
+		"typecheck": "tsc --noEmit"
 	},
 	"devDependencies": {
 		"@types/node": "24.13.6",
@@ -22,6 +23,7 @@
 		"ora": "9.4.1",
 		"oxfmt": "0.72.0",
 		"semver": "7.8.5",
-		"simple-git": "4.0.2"
+		"simple-git": "4.0.2",
+		"typescript": "7.0.2"
 	}
 }
