@@ -5,7 +5,7 @@
 that makes most of the community unable to access their package without
 [vulnerabilities](https://github.com/advisories/GHSA-4r6h-8v6p-xvw6),
 I decided to make this project. It automatically takes a fresh version of SheetJS
-from their git repository, and publishes to npm if the version is different.
+from their CDN, and publishes to npm if the version is different.
 The whole process is automated and works through Github Actions.
 https://github.com/e965/sheetjs-npm-publisher
 
