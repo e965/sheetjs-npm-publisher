@@ -19,10 +19,10 @@ jobs:
 
     steps:
       - name: Git checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@v7.0.1
 
       - name: Install Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@v7.1.0
         with:
           node-version-file: package.json
           registry-url: https://registry.npmjs.org
