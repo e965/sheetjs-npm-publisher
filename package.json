@@ -7,7 +7,7 @@
 	"author": "Dmitry <inbox@e965.ru> (https://e965.ru)",
 	"license": "MIT",
 	"engines": {
-		"node": "^24.18.0",
+		"node": "^24.22.0",
 		"npm": "^12.2.0"
 	},
 	"scripts": {
@@ -18,9 +18,9 @@
 		"typecheck": "tsc --noEmit"
 	},
 	"devDependencies": {
-		"@types/node": "24.13.6",
+		"@types/node": "24.19.2",
 		"@types/semver": "7.8.0",
-		"oxfmt": "0.72.0",
+		"oxfmt": "0.74.0",
 		"semver": "7.8.5",
 		"typescript": "7.0.2"
 	}
